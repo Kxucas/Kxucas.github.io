@@ -6,18 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://kxucas.github.io">
-  <title>20190925 | 开轩、</title>
+  <title>隐式证书 | 开轩、</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="##写在前面最近学习了一下关于隐式证书的相关知识，一并整理一下。">
+  <meta name="description" content="写在前面最近学习了一下关于隐式证书的相关知识，一并整理一下。隐式证书是一种更加轻量级的安全通信方案，它将签名信息和公钥信息结合。CA在构建证书时候的资源消耗相对普通证书要少一些">
 <meta property="og:type" content="article">
-<meta property="og:title" content="20190925">
+<meta property="og:title" content="隐式证书">
 <meta property="og:url" content="https://kxucas.github.io/2020/05/01/20190925/index.html">
 <meta property="og:site_name" content="开轩、">
-<meta property="og:description" content="##写在前面最近学习了一下关于隐式证书的相关知识，一并整理一下。">
+<meta property="og:description" content="写在前面最近学习了一下关于隐式证书的相关知识，一并整理一下。隐式证书是一种更加轻量级的安全通信方案，它将签名信息和公钥信息结合。CA在构建证书时候的资源消耗相对普通证书要少一些">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://kxucas.github.io/2020/05/01/20190925/1.jpg">
+<meta property="og:image" content="https://kxucas.github.io/2020/05/01/20190925/3.jpg">
 <meta property="article:published_time" content="2020-05-01T01:10:11.000Z">
-<meta property="article:modified_time" content="2020-05-10T13:24:13.731Z">
+<meta property="article:modified_time" content="2020-05-10T13:42:20.583Z">
 <meta property="article:author" content="开轩">
 <meta property="article:tag" content="Security">
 <meta name="twitter:card" content="summary">
@@ -154,7 +155,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      20190925
+      隐式证书
     </h1>
   
 
@@ -167,20 +168,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>##<strong>写在前面</strong><br>最近学习了一下关于隐式证书的相关知识，一并整理一下。</p>
+        <p><strong>写在前面</strong><br>最近学习了一下关于隐式证书的相关知识，一并整理一下。<br>隐式证书是一种更加轻量级的安全通信方案，它将签名信息和公钥信息结合。CA在构建证书时候的资源消耗相对普通证书要少一些</p>
 <a id="more"></a>
-<p>##<strong>ECQV方案</strong><br><strong>ECQV</strong></p>
+<p><strong>一、ECQV算法原理</strong>    </p>
 <img src="/2020/05/01/20190925/1.jpg" class title="这是一个新的博客的图片的说明">
-<p>流程总览如上图<br>    安全级别： 目前支持的有80、112、128、192和256 bits<br>    哈希函数：用于计算证书的摘要，能使用的要满足SHS规定<br>    （可以使用的函数列表SEC1,3.5）<br>    Hashing to Integers Modulo n：记为H_n()<br>输入：任意长度字节串（octet strings）S、哈希函数H（输出结果为长度是hashlen的比特串（bit strings））、整数n;<br>操作：计算 h=H(S)，<br>从 h 中生成整数 e，如下：<br>    令E=leftmost[log_2⁡n] bits of h ，即h的最左边[log_2⁡n]个比特；<br>    将比特串E→字节串E （<br>（方法见SEC1中的Octet-String-Conversion-to-Bit-String）；<br>    将字节串E→整数 e<br>（方法见SEC1中的Octet-String-to-Integer Conversion）<br>输出：整数 e ，位于区间[0,……,n-1]</p>
-<pre><code>随机数生成：随机数生成器要满足ANSI X9.82或NIST 800-90A的要求，SEC1中也有规定（在cert_request和cert_generation处理中会用到，以生成私钥）
-椭圆曲线域参数：其生成和验证均要满足SEC1的要求。具体包括参数如下：
-field size → q
-椭圆曲线系数 a 和 b;
-可验证的基点生成器 G；（详见SEC2，也指定了推荐的椭圆曲线）
-the order of G→n;
-cofactor→h，使得hn恰为椭圆曲线上的点数</code></pre><p><strong>2.3 ECQV隐式证书机制</strong></p>
-<p>总共五部分，涉及三个实体：证书请求者U、证书签发者CA、证书处理者V。<br>    ECQV_Setup：<br>涉及的所有实体要执行以下预备过程，以便继续支持ECQV：<br>    椭圆曲线域参数：q、a、b、G、n、h<br>（由CA选取并确保/验证参数的有效性）<br>    哈希函数 H （CA选取）；<br>    随机数生成器（CA和U各自选取并初始化）；<br>    CA生成EC密钥对 (d_CA, Q_CA) ，有Q_(CA )  = d_CA G；<br>（所有密钥对的生成要使用SEC1中规定的原型——key pair genereatin primitive。此处若CA的密钥对不是自己生成，是选定的推荐参数，则需验证/确信密钥对的有效性和CA对私钥的拥有权）<br>    U、V以可信方式获取椭圆曲线域参数、哈希函数、CA公钥 𝑄𝐶𝐴<br>并可以确信这些参数的有效性，以及CA是否拥有其私钥d_CA ；<br>    证书编码方式：（给出了3种，证书内容被编码为字节串（octet strings））<br>Fixed-length Fields<br>Minimal ASN.1 Encoding Scheme<br>X.509-Compliant ASN.1 Encoding<br>    Cert_Request：将证书请求（U,RU）发送给CA<br>输入：CA选定的椭圆曲线参数、字符串U（标识用户U的身份）<br>操作：生成EC密钥对 (k_U, R_U)；<br>将R_U→字节串RU （使用SEC1中的Elliptic-Curve-Point-to-Octet-String）<br>输出：密钥 k_U（保密），证书请求（U,RU）<br>注：证书请求（U,RU）的发送，必须使用能够保证数据完整性的方法发送给CA。<br>    Cert_Generate ：CA收到证书请求（U,RU）后，生成隐式证书cert、私钥重构点r，并回复给证书请求者U<br>输入：<br>CA选定的椭圆曲线参数、<br>CA选定的哈希函数、<br>CA的私钥d_CA、<br>证书请求（U,RU）、<br>指定的证书编码方式、<br>其他的证书输入项等。<br>操作：<br>1）将字节串RU恢复成椭圆曲线点R_U（Octet-String-to-Elliptic-Curve-Point）；<br>2）验证R_U有效性，（使用SEC1中的公钥验证技术），如果输出invalid，则stop；<br>3）生成密钥对（ k,kG）（使用SEC1中的密钥对生成原型）;<br>4）计算公钥重建点 P_U=R_U+kG;<br>5）将P_U 转换成字节串PU（使用Elliptic-Curve-Point-to-Octet-String）；<br>6）调用指定的证书编码方法，将必要的输入项和字节串PU进行证书编码，若返回invalid，则stop，否则将最终的返回结果作为证书Cert_U；<br>7）计算证书哈希值[e=H]_n ([Cert]_U)，一个模n的整数；<br>8）若eP_U+Q_CA=O，O 是一个 identity element，则转向步骤3）<br>9）计算整数r=ek+d_CA (mod n) ；<br>注：O，椭圆曲线上的一个特殊点，称为无穷远点或零点，是椭圆曲线加法群的单位元<br>输出：（r, [Cert]_U），将其回复给证书请求者U。<br>（该回复可以是明文形式的，且不必要经由安全通道进行传送，因为U会用步骤Cert_Reception来演这个接收消息的有效性）<br>    Cert_PK Extraction：证书请求者U收到回复（r, [Cert]_U）后，提取公钥；<br>输入：<br>    选定的椭圆曲线参数、选定的哈希函数、<br>    CA的公钥Q_CA、<br>    证书[Cert]_U<br>操作：<br>    按照指定证书编码方式解码[Cert]_U，若输出invalid则stop，否则返回字节串PU；<br>    将字节串PU恢复成椭圆点P_U（Octet-String-to-Elliptic-Curve-Point）<br>    验证椭圆曲线点P_U的有效性，若输出invalid，则stop<br>    计算证书哈希值[e=H]_n ([Cert]_U)，一个模n的整数；<br>    计算公钥重构值Q_U=eP_U+Q_CA；<br>输出：invalid或者Q_U（正常情况下的输出）<br>注：Q_U 应该是椭圆曲线上的一个阶为 n 的点。<br>    Cert_Reception：证书请求者U验证隐式证书的内容和私钥重构点r<br>输入：<br>    选定的椭圆曲线参数、选定的哈希函数、<br>    证书请求者U的私钥k_U、<br>    收到的CA的回复消息，（r, [Cert]_U）<br>操作：<br>    通过Cert_PK Extraction步骤计算出公钥Q_U；<br>    计算证书哈希值[e=H]_n ([Cert]_U)，一个模n的整数；<br>    计算重构后的私钥d_U=ek_U+r；<br>    计算Q_U=d_U G;    判断Q_U 是否与Q_U 相等<br>输出：valid（相等）或者 invalid（不相等）</p>
-<p>##<strong>三、证书编码格式</strong>         </p>
+<p>流程总览如上图<br>    安全级别： 目前支持的有80、112、128、192和256 bits<br>    哈希函数：用于计算证书的摘要，能使用的要满足SHS规定<br>    （可以使用的函数列表SEC1,3.5）<br>    Hashing to Integers Modulo n：记为H_n()<br>参数说明</p>
+<img src="/2020/05/01/20190925/3.jpg" class title="这是一个新的博客的图片的说明">
+<p>输入：任意长度字节串（octet strings）S、哈希函数H（输出结果为长度是hashlen的比特串（bit strings）、整数n;<br>操作：计算 h=H(S)，<br>从 h 中生成整数 e，如下：<br>    令E=leftmost（log_2⁡n） bits of h ，即h的最左边log_2⁡n个比特；<br>    将比特串E→字节串E（方法见SEC1中的Octet-String-Conversion-to-Bit-String）；<br>    将字节串E→整数 e （方法见SEC1中的Octet-String-to-Integer Conversion）<br>输出：整数 e ，位于区间[0,……,n-1]<br>    随机数生成：随机数生成器要满足ANSI X9.82或NIST 800-90A的要求，SEC1中也有规定（在cert_request和cert_generation处理中会用到，以生成私钥）<br>    椭圆曲线域参数：其生成和验证均要满足SEC1的要求。具体包括参数如下：<br>    椭圆曲线系数 a 和 b;<br>    可验证的基点生成器 G；（详见SEC2，也指定了推荐的椭圆曲线）</p>
+<p><strong>二、ECQV隐式证书机制</strong>     </p>
+<p>总共五部分，涉及三个实体：证书请求者U、证书签发者CA、证书处理者V。<br>    ECQV_Setup：<br>涉及的所有实体要执行以下预备过程，以便继续支持ECQV：<br>    椭圆曲线域参数：q、a、b、G、n、h<br>（由CA选取并确保/验证参数的有效性）<br>    哈希函数 H （CA选取）；<br>    随机数生成器（CA和U各自选取并初始化）；<br>    CA生成EC密钥对 (d_CA, Q_CA) ，有Q_(CA )  = d_CA G；<br>（所有密钥对的生成要使用SEC1中规定的原型——key pair genereatin primitive。此处若CA的密钥对不是自己生成，是选定的推荐参数，则需验证/确信密钥对的有效性和CA对私钥的拥有权）<br>    U、V以可信方式获取椭圆曲线域参数、哈希函数、CA公钥、Q_(CA)<br>并可以确信这些参数的有效性，以及CA是否拥有其私钥d_CA ；<br>    证书编码方式：（给出了3种，证书内容被编码为字节串（octet strings））<br>Fixed-length Fields<br>Minimal ASN.1 Encoding Scheme<br>X.509-Compliant ASN.1 Encoding<br>    Cert_Request：将证书请求（U,RU）发送给CA<br>输入：CA选定的椭圆曲线参数、字符串U（标识用户U的身份）<br>操作：生成EC密钥对 (k_U, R_U)；<br>将R_U→字节串RU （使用SEC1中的Elliptic-Curve-Point-to-Octet-String）<br>输出：密钥 k_U（保密），证书请求（U,RU）<br>注：证书请求（U,RU）的发送，必须使用能够保证数据完整性的方法发送给CA。<br>    Cert_Generate ：CA收到证书请求（U,RU）后，生成隐式证书cert、私钥重构点r，并回复给证书请求者U<br>输入：<br>CA选定的椭圆曲线参数、<br>CA选定的哈希函数、<br>CA的私钥d_CA、<br>证书请求（U,RU）、<br>指定的证书编码方式、<br>其他的证书输入项等。<br>操作：<br>1）将字节串RU恢复成椭圆曲线点R_U（Octet-String-to-Elliptic-Curve-Point）；<br>2）验证R_U有效性，（使用SEC1中的公钥验证技术），如果输出invalid，则stop；<br>3）生成密钥对（ k,kG）（使用SEC1中的密钥对生成原型）;<br>4）计算公钥重建点 P_U=R_U+kG;<br>5）将P_U 转换成字节串PU（使用Elliptic-Curve-Point-to-Octet-String）；<br>6）调用指定的证书编码方法，将必要的输入项和字节串PU进行证书编码，若返回invalid，则stop，否则将最终的返回结果作为证书Cert_U；<br>7）计算证书哈希值[e=H]_n ([Cert]_U)，一个模n的整数；<br>8）若eP_U+Q_CA=O，O 是一个 identity element，则转向步骤3）<br>9）计算整数r=ek+d_CA (mod n) ；<br>注：O，椭圆曲线上的一个特殊点，称为无穷远点或零点，是椭圆曲线加法群的单位元<br>输出：（r, [Cert]_U），将其回复给证书请求者U。<br>（该回复可以是明文形式的，且不必要经由安全通道进行传送，因为U会用步骤Cert_Reception来演这个接收消息的有效性）<br>    Cert_PK Extraction：证书请求者U收到回复（r, [Cert]_U）后，提取公钥；<br>输入：<br>    选定的椭圆曲线参数、选定的哈希函数、<br>    CA的公钥Q_CA、<br>    证书[Cert]_U<br>操作：<br>    按照指定证书编码方式解码[Cert]_U，若输出invalid则stop，否则返回字节串PU；<br>    将字节串PU恢复成椭圆点P_U（Octet-String-to-Elliptic-Curve-Point）<br>    验证椭圆曲线点P_U的有效性，若输出invalid，则stop<br>    计算证书哈希值[e=H]_n ([Cert]_U)，一个模n的整数；<br>    计算公钥重构值Q_U=eP_U+Q_CA；<br>输出：invalid或者Q_U（正常情况下的输出）<br>注：Q_U 应该是椭圆曲线上的一个阶为 n 的点。<br>    Cert_Reception：证书请求者U验证隐式证书的内容和私钥重构点r<br>输入：<br>    选定的椭圆曲线参数、选定的哈希函数、<br>    证书请求者U的私钥k_U、<br>    收到的CA的回复消息，（r, [Cert]_U）<br>操作：<br>    通过Cert_PK Extraction步骤计算出公钥Q_U；<br>    计算证书哈希值[e=H]_n ([Cert]_U)，一个模n的整数；<br>    计算重构后的私钥d_U=ek_U+r；<br>    计算Q_U=d_U G;    判断Q_U 是否与Q_U 相等<br>输出：valid（相等）或者 invalid（不相等）</p>
+<p><strong>三、证书编码格式</strong>         </p>
 <ol start="3">
 <li>证书编码格式<br>（1）    Fixed-length Fields：固定长度，固定字段<br>（2）    Minimal ASN.1 Encoding Scheme ：最小ASN.1编码机制（MES）<br>（3）    X.509-Compliant ASN.1 Encoding ：X.509兼容的编码格式<br>（4）    MES和X.509-Compliant 两种编码格式之间的相互转换</li>
 </ol>
