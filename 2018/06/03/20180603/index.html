@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://kxucas.github.io">
-  <title>谈谈OAuth1,OAuth2异同 | 开轩、</title>
+  <title>谈谈OAuth1,OAuth2 | 开轩、</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="##一、写在前面最近学习了一下关于OAuth的相关知识，一并整理一下。整理的内容分为OAuth1.0a和OAuth2两部分。">
+  <meta name="description" content="最近学习了一下关于OAuth的相关知识，一并整理一下。整理的内容分为OAuth1.0a和OAuth2两部分。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="谈谈OAuth1,OAuth2异同">
+<meta property="og:title" content="谈谈OAuth1,OAuth2">
 <meta property="og:url" content="https://kxucas.github.io/2018/06/03/20180603/index.html">
 <meta property="og:site_name" content="开轩、">
-<meta property="og:description" content="##一、写在前面最近学习了一下关于OAuth的相关知识，一并整理一下。整理的内容分为OAuth1.0a和OAuth2两部分。">
+<meta property="og:description" content="最近学习了一下关于OAuth的相关知识，一并整理一下。整理的内容分为OAuth1.0a和OAuth2两部分。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2018-06-03T02:55:00.000Z">
-<meta property="article:modified_time" content="2020-05-10T10:00:44.228Z">
+<meta property="article:modified_time" content="2020-05-10T13:53:15.289Z">
 <meta property="article:author" content="开轩">
 <meta property="article:tag" content="Security">
 <meta name="twitter:card" content="summary">
@@ -152,7 +152,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      谈谈OAuth1,OAuth2异同
+      谈谈OAuth1,OAuth2
     </h1>
   
 
@@ -165,9 +165,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>##<strong>一、写在前面</strong><br>最近学习了一下关于OAuth的相关知识，一并整理一下。整理的内容分为OAuth1.0a和OAuth2两部分。</p>
+        <p>最近学习了一下关于OAuth的相关知识，一并整理一下。整理的内容分为OAuth1.0a和OAuth2两部分。</p>
 <a id="more"></a>
-<p>##<strong>二、OAuth1.0a</strong><br><strong>2.1 OAuth 1.0a (One Leg)</strong></p>
+<p><strong>一、OAuth1.0a</strong><br><strong>1.1 OAuth 1.0a (One Leg)</strong></p>
 <ol>
 <li>应用给服务器发送一个签名请求，附带以下参数：           <ul>
 <li>oauth_token Empty String             </li>
@@ -182,7 +182,7 @@
 <li>服务验证并授予对资源的访问                 </li>
 <li>应用程序利用请求的资源                </li>
 </ol>
-<p><strong>2.2 OAuth 1.0a (Two Legs)</strong></p>
+<p><strong>1.2 OAuth 1.0a (Two Legs)</strong></p>
 <ol>
 <li>应用发送一个签名请求，以获取 Request Token：                 <ul>
 <li>oauth_consumer_key                          </li>
@@ -211,7 +211,7 @@
 <li>服务器返回Access Token和Token Secret    </li>
 <li>应用通过Access Token和Token Secret利用请求的资源</li>
 </ol>
-<p><strong>2.3 OAuth 1.0a (Three Legged)</strong></p>
+<p><strong>1.3 OAuth 1.0a (Three Legged)</strong></p>
 <ol>
 <li>应用发送一个签名请求，以获取 Request Token：                <ul>
 <li>oauth_consumer_key                       </li>
@@ -253,9 +253,9 @@
 <li>服务器返回Access Token和Token Secret                       </li>
 <li>应用通过Access Token和Token Secret利用请求的资源                       </li>
 </ol>
-<p>##<strong>三、OAuth2</strong>         </p>
-<p>** 3.1 OAuth 2 **</p>
-<p>3.1.1 客户端凭据方式              </p>
+<p><strong>二、OAuth2</strong>         </p>
+<p>** 2.1 OAuth 2 **</p>
+<p>2.1.1 客户端凭据方式              </p>
 <ol>
 <li>应用发送请求到服务器：                   <ul>
 <li>grant_type = client_credentials<br>如果没有使用Authorization（Authorization: Basic Base64(client_id:client_secret)） 的header，必须附带参数为：                   </li>
@@ -270,7 +270,7 @@
 </ul>
 </li>
 </ol>
-<p>3.1.2 隐式授予方式               </p>
+<p>2.1.2 隐式授予方式               </p>
 <ol>
 <li>应用发送请求到服务器：                                                <ul>
 <li>response_type = token                      </li>
@@ -289,7 +289,7 @@
 <li>应用程序跳转至redirect_uri                      </li>
 <li>redirect_uri将响应一段脚本或HTML片段。响应的脚本或HTML片段包含参数access_token，还有您可能需要的任何其他参数。                  </li>
 </ol>
-<p>3.1.3 资源所有者密码方式                  </p>
+<p>2.1.3 资源所有者密码方式                  </p>
 <ol>
 <li>应用向资源所有者请求凭证                   <ul>
 <li>username                   </li>
@@ -311,7 +311,7 @@
 </ul>
 </li>
 </ol>
-<p>** 3.2 OAuth 2 **</p>
+<p>** 2.2 OAuth 2 **</p>
 <ol>
 <li>应用重定向用户到授权服务：                    <ul>
 <li>client_id                    </li>
@@ -343,7 +343,7 @@
 </li>
 <li>应用保存ACCESS_TOKEN，在随后的请求中使用。通常这个值被存储在session或或cookie，需要时作为授权请求的参数。   </li>
 </ol>
-<p>** 3.3 OAuth 2 (Refresh Token 刷新token) **</p>
+<p>** 2.3 OAuth 2 (Refresh Token 刷新token) **</p>
 <p>在OAuth2中，Token会有过期时间，我们必须去refresh_token，使用其他一些先前获得的参数，生成一个新的token。这是一个容易得多的流程。    </p>
 <ol>
 <li>创建刷新令牌请求                  <ul>
@@ -360,7 +360,7 @@
 </ul>
 </li>
 </ol>
-<p>##<strong>四、stackoverflow上的一些问答</strong>         </p>
+<p><strong>三、stackoverflow上的一些问答</strong>         </p>
 <p><strong>Q</strong>：OpenID和OAuth的区别是什么？<br><strong>A</strong>：OpenID是有关身份验证（即证明你是谁），OAuth有关授权（即授予访问权限），推荐博文：<a href="http://cakebaker.42dh.com/2008/04/01/openid-versus-oauth-from-the-users-perspective/" target="_blank" rel="noopener">从用户的角度来看OpenID和OAuth</a>                    </p>
 <p><strong>Q</strong>：OAuth2与OAuth1不同的地方是？有人可以简单的解释的OAuth2和OAuth1之间的区别吗？ OAuth1现在已经过时，应实施的OAuth2？我没有看到许多实现的OAuth2，大多数仍在使用OAuth，这让我怀疑的OAuth2的准备使用。是吗？<br><strong>A</strong>：OAuth2能更好地支持不是基于浏览器的应用。对于不是基于浏览器的应用程序，这是对OAuth的主要挑战。例如，在OAuth1.0，桌面应用或手机应用必须引导用户打开浏览器所需的服务，与服务进行身份验证，并复制令牌从服务返回给应用程序。这里的主要批评是针对用户体验。使用OAuth2.0，可以用新的方式为用户的应用程序获得授权。<br>OAuth2.0不再需要客户端应用程序拥有密钥。这让人回想起老的Twitter认证的API，它并不需要应用得到HMAC哈希令牌和请求字符串。使用OAuth2.0，应用程序可以通过HTTPS获得令牌。<br>OAuth2.0的签名流程简单得多。没有更多的特殊解析，排序，或编码。<br>OAuth2.0的访问令牌是“短命”的。通常情况下，OAuth1.0的访问令牌可以存储一年或一年以上（Twitter从来没有让他们到期）。 OAuth的2.0有刷新令牌的概念。虽然我不能完全肯定这是什么意思，我的猜测是，您的访问令牌可以是短暂存储的（即基于会话），而你可以刷新令牌。你使用刷新令牌获取新的访问令牌，而不是让用户重新授权您的应用程序。<br>最后，OAuth2.0使得负责处理的OAuth请求的服务器和处理用户的授权服务器之间的角色有一个干净的分离。更多信息，在上述的文章中详述。</p>
 <p><strong>Q</strong>：OAuth2服务器群怎么使用state来防范CSRF？<br><strong>A</strong>：state只是一个随机的字符串，可以做这样的事情：$state = md5(uniqid(rand(), TRUE));在session中记录satate，以便稍后你能做验证。一些额外的资料：<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-threatmodel-00" target="_blank" rel="noopener">OAuth2威胁文件模型</a>，<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-26#section-10.12" target="_blank" rel="noopener">特别CSRF保护</a>                                    </p>
@@ -478,7 +478,7 @@
     </a>
   
   
-    <a href="/2018/03/26/20190926/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/03/26/20180326/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">20180326</div>
       <i class="icon-circle-right"></i>
     </a>
